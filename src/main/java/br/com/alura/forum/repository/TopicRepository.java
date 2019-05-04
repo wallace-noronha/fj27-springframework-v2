@@ -9,6 +9,7 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import br.com.alura.forum.model.Category;
+import br.com.alura.forum.model.User;
 import br.com.alura.forum.model.topic.domain.Topic;
 
 public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificationExecutor<Topic> {
@@ -42,4 +43,10 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
 			+ "JOIN subcategory.category category "
 			+ "WHERE category = :category AND topic.status = 'NOT_ANSWERED'")
 	int countUnansweredTopicsByCategory(@Param("category") Category category);
+	
+	void save(Topic topic);
+
+	List<Topic> findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(User loggedUser, Instant oneHourAgo);
+
+	Topic findById(Long id);
 }
